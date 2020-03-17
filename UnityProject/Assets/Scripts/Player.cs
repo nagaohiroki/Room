@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
 	[SerializeField]
@@ -10,21 +11,33 @@ public class Player : MonoBehaviour
 	[SerializeField]
 	float mMaxAngleX = 0.0f;
 	[SerializeField]
+	float mJumpPower = 0.0f;
+	[SerializeField]
 	Rigidbody mRigidbody = null;
+	[SerializeField]
+	Text mDebug = null;
+	[SerializeField]
+	CapsuleCollider mFootCollider = null;
+	[SerializeField]
+	PlayerFoot mFoot = null;
 	Vector3 mAngle;
 	void Move()
 	{
-		var vec = Vector3.zero;
-		vec.x = Input.GetAxis("Horizontal");
-		vec.z = Input.GetAxis("Vertical");
-		mRigidbody.velocity = transform.rotation * vec * mMoveSpeed;
+		var vec = mRigidbody.velocity;
+		vec.x = Input.GetAxis("Horizontal") * mMoveSpeed;
+		vec.z = Input.GetAxis("Vertical") * mMoveSpeed;
+		if (Input.GetButtonDown("Jump") && mFoot.IsLanding)
+		{
+			vec.y = mJumpPower;
+		}
+		mRigidbody.velocity = Quaternion.Euler(0.0f, Camera.main.transform.rotation.eulerAngles.y, 0.0f) * vec;
 	}
 
 	void Rotate()
 	{
 		var angle = Vector3.zero;
-		mAngle.x = Mathf.Clamp(mAngle.x - Input.GetAxis("Mouse Y"), mMinAngleX, mMaxAngleX);
-		mAngle.y += Input.GetAxis("Mouse X");
+		mAngle.x -= Input.GetAxis("Mouse Y") * mRotateSpeed;
+		mAngle.y += Input.GetAxis("Mouse X") * mRotateSpeed;
 		if(mAngle.y <= 0.0f)
 		{
 			mAngle.y = 360.0f;
@@ -33,10 +46,9 @@ public class Player : MonoBehaviour
 		{
 			mAngle.y = 0.0f;
 		}
+		mAngle.x = Mathf.Clamp(mAngle.x, mMinAngleX, mMaxAngleX);
 		var cam = Camera.main.transform;
-		var euler = cam.localEulerAngles;
-		euler = mAngle * mRotateSpeed;
-		cam.localEulerAngles = euler;
+		cam.localEulerAngles = mAngle;;
 		cam.position = transform.position + Vector3.up;
 	}
 	void Update()
