@@ -12,8 +12,8 @@ public class Door : CheckObject
 	}
 	void Update()
 	{
-		mAngleY += mIsOpen ? mDoorSpeed : -mDoorSpeed * Time.deltaTime;
+		mAngleY += (mIsOpen ? mDoorSpeed : -mDoorSpeed) * Time.deltaTime;
 		mAngleY = Mathf.Clamp(mAngleY, 0.0f, 90.0f);
-		transform.rotation = Quaternion.Euler(0.0f, mAngleY, 0.0f);
+		transform.parent.transform.rotation = Quaternion.Euler(0.0f, mAngleY, 0.0f);
 	}
 }
