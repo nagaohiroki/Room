@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
 	[SerializeField]
 	float mSightRange = 10.0f;
 	[SerializeField]
+	Vector3 mCameraOffset = Vector3.up;
+	[SerializeField]
 	Text mHUD = null;
 	Vector3 mAngle;
 	void Sight()
@@ -70,7 +72,7 @@ public class Player : MonoBehaviour
 		mAngle.x = Mathf.Clamp(mAngle.x, mMinAngleX, mMaxAngleX);
 		var cam = Camera.main.transform;
 		cam.localEulerAngles = mAngle;;
-		cam.position = transform.position + Vector3.up;
+		cam.position = transform.position + mCameraOffset;
 	}
 	void Update()
 	{

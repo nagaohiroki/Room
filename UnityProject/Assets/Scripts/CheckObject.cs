@@ -3,6 +3,6 @@ public class CheckObject : MonoBehaviour
 {
 	public virtual void Check()
 	{
-		Debug.Log("Check");
+		Debug.Log("Check:" + name);
 	}
 }
