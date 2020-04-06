@@ -3,9 +3,9 @@ public class LightObject : CheckObject
 {
 	[SerializeField]
 	Light mLight = null;
-	public override void Check()
+	public override void Check(Player inPlayer)
 	{
-		base.Check();
+		base.Check(inPlayer);
 		mLight.enabled = !mLight.enabled;
 		if (mLight.enabled)
 		{

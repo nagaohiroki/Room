@@ -23,12 +23,42 @@ public class Player : MonoBehaviour
 	[SerializeField]
 	float mSightRange = 10.0f;
 	[SerializeField]
-	Vector3 mCameraOffset = Vector3.up;
-	[SerializeField]
 	Text mHUD = null;
+	[SerializeField]
+	GameObject mHand = null;
 	Vector3 mAngle;
+	bool HasItem{get{return mHand.transform.childCount != 0;}}
+	public void TakeHand(CheckObject inCheckObject)
+	{
+		if(HasItem)
+		{
+			return;
+		}
+		inCheckObject.transform.SetParent(mHand.transform, false);
+		inCheckObject.transform.localPosition = Vector3.zero;
+		var rigidbody = inCheckObject.GetComponent<Rigidbody>();
+		rigidbody.isKinematic = true;
+		rigidbody.useGravity = false;
+	}
+
+	void ReleaseFromHand()
+	{
+		var child = mHand.transform.GetChild(0);
+		child.SetParent(null);
+		var rigidbody = child.GetComponent<Rigidbody>();
+		rigidbody.isKinematic = false;
+		rigidbody.useGravity = true;
+	}
 	void Sight()
 	{
+		if(HasItem)
+		{
+			if(Input.GetButtonDown("Fire1"))
+			{
+				ReleaseFromHand();
+			}
+			return;
+		}
 		RaycastHit hitInfo;
 		var start = Camera.main.transform.position;
 		var end = start + Camera.main.transform.forward * mSightRange;
@@ -49,7 +79,7 @@ public class Player : MonoBehaviour
 		mHUD.text = check.GetCheckObjectName;
 		if(Input.GetButtonDown("Fire1"))
 		{
-			check.Check();
+			check.Check(this);
 		}
 	}
 	void Move()
@@ -61,7 +91,7 @@ public class Player : MonoBehaviour
 		{
 			vec.y = mJumpPower;
 		}
-		mRigidbody.velocity = Quaternion.Euler(0.0f, Camera.main.transform.rotation.eulerAngles.y, 0.0f) * vec;
+		mRigidbody.velocity = Quaternion.Euler(0.0f, mRigidbody.rotation.eulerAngles.y, 0.0f) * vec;
 	}
 	void Rotate()
 	{
@@ -77,9 +107,8 @@ public class Player : MonoBehaviour
 			mAngle.y = 0.0f;
 		}
 		mAngle.x = Mathf.Clamp(mAngle.x, mMinAngleX, mMaxAngleX);
-		var cam = Camera.main.transform;
-		cam.localEulerAngles = mAngle;;
-		cam.position = transform.position + mCameraOffset;
+		Camera.main.transform.localRotation = Quaternion.Euler(mAngle.x, 0.0f, 0.0f);
+		mRigidbody.MoveRotation(Quaternion.Euler(0.0f, mAngle.y, 0.0f));
 	}
 	void Update()
 	{

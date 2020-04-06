@@ -9,10 +9,10 @@ public class Door : CheckObject
 	float mDoorClose = 0.0f;
 	bool mIsOpen = false;
 	float mAngleY = 0.0f;
-	public override void Check()
+	public override void Check(Player inPlayer)
 	{
 		mIsOpen = !mIsOpen;
-		base.Check();
+		base.Check(inPlayer);
 	}
 	void Update()
 	{
