@@ -164,8 +164,11 @@ MonoBehaviour:
   mFoot: {fileID: 687508514}
   mSightTargetLayer:
     serializedVersion: 2
-    m_Bits: 1024
-  mSightRange: 10
+    m_Bits: 1025
+  mBlock:
+    serializedVersion: 2
+    m_Bits: 1
+  mSightRange: 5
   mCameraOffset: {x: 0, y: 0.5, z: 0}
   mHUD: {fileID: 571282138}
 --- !u!54 &277251905
@@ -366,6 +369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b508372c6d405e740b9ce3a8f09092a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mCheckObjectName: 
 --- !u!1 &416913790
 GameObject:
   m_ObjectHideFlags: 0
@@ -1034,6 +1038,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1318069521, guid: f7e8fcf88c4373548a26744b22b357df, type: 3}
+      propertyPath: mCheckObjectName
+      value: Door
+      objectReference: {fileID: 0}
     - target: {fileID: 7143901679198589381, guid: f7e8fcf88c4373548a26744b22b357df,
         type: 3}
       propertyPath: m_LocalPosition.x

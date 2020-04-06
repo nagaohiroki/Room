@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-
 public class Swich : CheckObject
 {
 	[SerializeField]
@@ -9,7 +7,7 @@ public class Swich : CheckObject
 	public override void Check()
 	{
 		base.Check();
-		foreach (var check in mCheckObjects)
+		foreach(var check in mCheckObjects)
 		{
 			check.Check();
 		}

@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
 	[SerializeField]
 	LayerMask mSightTargetLayer = 0;
 	[SerializeField]
+	LayerMask mBlock = 0;
+	[SerializeField]
 	float mSightRange = 10.0f;
 	[SerializeField]
 	Vector3 mCameraOffset = Vector3.up;
@@ -35,14 +37,19 @@ public class Player : MonoBehaviour
 		{
 			return;
 		}
-		mHUD.text = hitInfo.collider.gameObject.name;
+		if(hitInfo.collider.gameObject.layer == LayerMask.GetMask("Default"))
+		{
+			return;
+		}
+		var check = hitInfo.collider.gameObject.GetComponent<CheckObject>();
+		if(check == null)
+		{
+			return;
+		}
+		mHUD.text = check.GetCheckObjectName;
 		if(Input.GetButtonDown("Fire1"))
 		{
-			var check = hitInfo.collider.gameObject.GetComponent<CheckObject>();
-			if(check != null)
-			{
-				check.Check();
-			}
+			check.Check();
 		}
 	}
 	void Move()

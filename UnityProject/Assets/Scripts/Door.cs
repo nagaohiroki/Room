@@ -18,6 +18,10 @@ public class Door : CheckObject
 	{
 		mAngleY += (mIsOpen ? mDoorSpeed : -mDoorSpeed) * Time.deltaTime;
 		mAngleY = Mathf.Clamp(mAngleY, Mathf.Min(mDoorClose, mDoorOpen), Mathf.Max(mDoorClose, mDoorOpen));
-		transform.rotation = Quaternion.Euler(0.0f, mAngleY, 0.0f);
+		if (name == "door01")
+		{
+			Debug.Log("" + mAngleY);
+		}
+		transform.localRotation = Quaternion.Euler(0.0f, mAngleY, 0.0f);
 	}
 }
