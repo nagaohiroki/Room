@@ -25,6 +25,8 @@ public class Player : MonoBehaviour
 	[SerializeField]
 	Text mHUD = null;
 	[SerializeField]
+	Light mLight = null;
+	[SerializeField]
 	GameObject mHand = null;
 	Vector3 mAngle;
 	bool HasItem{get{return mHand.transform.childCount != 0;}}
@@ -34,20 +36,21 @@ public class Player : MonoBehaviour
 		{
 			return;
 		}
-		inCheckObject.transform.SetParent(mHand.transform, false);
+		var rigid = inCheckObject.GetComponent<Rigidbody>();
+		rigid.isKinematic = true;
+		rigid.useGravity = false;
+		rigid.detectCollisions = false;
 		inCheckObject.transform.localPosition = Vector3.zero;
-		var rigidbody = inCheckObject.GetComponent<Rigidbody>();
-		rigidbody.isKinematic = true;
-		rigidbody.useGravity = false;
+		inCheckObject.transform.SetParent(mHand.transform, false);
 	}
 
 	void ReleaseFromHand()
 	{
-		var child = mHand.transform.GetChild(0);
-		child.SetParent(null);
-		var rigidbody = child.GetComponent<Rigidbody>();
-		rigidbody.isKinematic = false;
-		rigidbody.useGravity = true;
+		var rigid = mHand.transform.GetChild(0).GetComponent<Rigidbody>();
+		mHand.transform.GetChild(0).transform.SetParent(null);
+		rigid.isKinematic = false;
+		rigid.useGravity = true;
+		rigid.detectCollisions = true;
 	}
 	void Sight()
 	{
@@ -115,6 +118,10 @@ public class Player : MonoBehaviour
 		Rotate();
 		Move();
 		Sight();
+		if(Input.GetKeyDown(KeyCode.F))
+		{
+			mLight.enabled = !mLight.enabled;
+		}
 	}
 	void OnApplicationFocus(bool hasFocus)
 	{
